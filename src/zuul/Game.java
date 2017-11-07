@@ -9,6 +9,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Stack<Room> previousRooms;
         
     /**
      * Cria o jogo e inicializa o mapa interno.
@@ -17,6 +18,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        previousRoom = new Stack<>();
     }
 
     /**
@@ -109,8 +111,12 @@ public class Game
             goRoom(command);
         else if (commandWord.equals("comer"))
             comer();
+        
         else if (commandWord.equals("sair"))
             wantToQuit = quit(command);
+        else if(commandWord.equals("voltar"))
+            returnRoom(command);
+        
         return wantToQuit;
     }
     public void comer(){
@@ -134,7 +140,7 @@ public class Game
         System.out.println("");
     }
     
-    private void printlocationInfo()
+    private void printLocationInfo()
     {
         System.out.println( currentRoom.getLongDescription());
     }
@@ -145,6 +151,22 @@ public class Game
      * Tenta ir para uma direção. Se há uma saída, entra na
      * nova sala, senão imprime uma mensagem de erro.
      */
+    
+    private void returnRoom(Command command){
+        if(command.hasSecondWord()){
+            System.out.println("Voltar o que?");
+           
+        }else{
+            if(previousRooms.empty()){
+                System.out.println("Voce já está no inicio");
+            }else{
+        
+        
+        currentRoom previousRoom.pop();
+        currentRoom = nextRoom;
+                printLocationInfo();
+        }  
+    }
     private void goRoom(Command command) 
     {
         if(!command.hasSecondWord()) {
